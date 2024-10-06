@@ -66,13 +66,13 @@ const NavigationItems: {
     isVisible: (user) => !isUndefined(user),
     icon: faUser,
   },
-  {
-    text: `Premium`,
-    isActive: (path: string[]) => isEqual(path[0], `premium`),
-    link: `/premium`,
-    isVisible: (user) => isUndefined(user),
-    icon: faCrown,
-  },
+  // {
+  //   text: `Premium`,
+  //   isActive: (path: string[]) => isEqual(path[0], `premium`),
+  //   link: `/premium`,
+  //   isVisible: (user) => isUndefined(user),
+  //   icon: faCrown,
+  // },
   {
     text: `Sign In`,
     isActive: constant(false),

@@ -284,3 +284,89 @@ export type XPBanTypes =
   | `rankingcard`
   | `dashboard_login`
   | `dashboard_blog_comment_create`;
+
+
+export interface XPCommunityExportData {
+  guild: ExportGuild;
+  guildMembers: ExportGuildMember[];
+}
+
+interface ExportGuild {
+  values: {
+    messagexp: number;
+    voicexp: number;
+    reactionxp: number;
+    lootXP: number;
+    fishXP: number;
+    rollXP: number;
+    triviaxp: number;
+    maximumdailyxp: number;
+    maximumlevel: number;
+    messagecooldown: number;
+    gamecooldown: number;
+    triviacooldown: number;
+    "req-message-length": number;
+    voicejoincooldown: number;
+  };
+  modules: {
+    messagexp: boolean;
+    voicexp: boolean;
+    reactionxp: boolean;
+    ignoreafk: boolean;
+    autonick: boolean;
+    autonickuseprefix: boolean;
+    autonickshowstring: boolean;
+    leaderboard: boolean;
+    singlerankrole: boolean;
+    removereachedlevelroles: boolean;
+    maximumlevel: boolean;
+    resetonleave: boolean;
+    enablecommandsinthreads: boolean;
+    games: boolean;
+    trivia: boolean;
+  };
+  logs: {
+    levelup?: string;
+    exceptions?: string;
+    voicetime?: string;
+  };
+  ignored: {
+    roles: string[];
+    channels: string[];
+  };
+  boosts: {
+    roles: {
+      id: string;
+      percentage: number;
+    }[];
+    channels: {
+      id: string;
+      percentage: number;
+    }[];
+  };
+  announce: {
+    current: boolean;
+    message: string;
+    ping: boolean;
+    channelId?: string;
+  };
+  leaderboard_message: {
+    enabled: boolean;
+    channelId?: string;
+    messageId?: string;
+  };
+  levelroles: {
+    id: string;
+    level: number;
+  }[];
+  premiumUser: string;
+  voteFreeUser: string;
+}
+
+interface ExportGuildMember {
+  userId: string;
+  xp: number;
+  settings: {
+    incognito?: boolean | null;
+  };
+}

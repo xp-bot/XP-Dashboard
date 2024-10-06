@@ -33,7 +33,7 @@ import {
   IXPUser,
   IXPUserBan,
   IXPUserPremium,
-  IXPUserPremiumServers,
+  IXPUserPremiumServers, XPCommunityExportData,
 } from "../models/backend/xp-models";
 
 const backendFetch = async <Body>(route: string, options?: RequestInit) => {
@@ -322,11 +322,15 @@ export const apiRoutes = {
         ),
     },
     guild: {
+      getExport: (guildID: string) =>
+          backendAxios<XPCommunityExportData>(`/xp/guild/${guildID}/export`, {
+            method: `GET`,
+          }),
       getLogs: (guildID: string, page = 1, query?: string) =>
-        backendAxios<IXPDBLog>(`/xp/guild/${guildID}/logs`, {
-          method: `GET`,
-          params: { query, page },
-        }),
+          backendAxios<IXPDBLog>(`/xp/guild/${guildID}/logs`, {
+            method: `GET`,
+            params: { query, page },
+          }),
       guildMember: {
         setGuildMembersXP: (guildID: string, userID: string, xp: number) =>
           backendAxios<{}>(`/xp/guild/${guildID}/member/${userID}/xp/${xp}`, {

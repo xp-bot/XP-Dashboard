@@ -62,7 +62,7 @@ const ChangelogModal = () => {
                 ...(visibleChanges ? visibleChanges[name] || [] : []),
                 ...change,
               ];
-            }
+            },
           );
       });
 

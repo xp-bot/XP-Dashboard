@@ -229,8 +229,9 @@ const Premium: NextPage<PremiumProps> = () => {
 export async function getStaticProps() {
   // const blogPosts = await apiRoutes.blog.get.posts();
   return {
-    props: {
-      // blogPosts: blogPosts.success ? blogPosts.body : [],
+    redirect: {
+      destination: "/",
+      permanent: true,
     },
   };
 }
