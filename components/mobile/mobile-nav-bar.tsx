@@ -1,6 +1,5 @@
 import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
 import {
-  faCrown,
   faHome,
   faServer,
   faSignIn,
@@ -66,13 +65,13 @@ const NavigationItems: {
     isVisible: (user) => !isUndefined(user),
     icon: faUser,
   },
-  {
-    text: `Premium`,
-    isActive: (path: string[]) => isEqual(path[0], `premium`),
-    link: `/premium`,
-    isVisible: (user) => isUndefined(user),
-    icon: faCrown,
-  },
+  // {
+  //   text: `Premium`,
+  //   isActive: (path: string[]) => isEqual(path[0], `premium`),
+  //   link: `/premium`,
+  //   isVisible: (user) => isUndefined(user),
+  //   icon: faCrown,
+  // },
   {
     text: `Sign In`,
     isActive: constant(false),
@@ -99,7 +98,7 @@ const MobileNavBar: FC<MobileNavBarProps> = () => {
           filter(NavigationItems, (item) =>
             item.isVisible
               ? item.isVisible(user.currentUser, currentPath)
-              : true
+              : true,
           ),
           ({ text, link, isActive, icon }, idx) => (
             <Link key={idx} href={link}>
@@ -116,7 +115,7 @@ const MobileNavBar: FC<MobileNavBarProps> = () => {
                 <p className="text-xs">{text}</p>
               </div>
             </Link>
-          )
+          ),
         )}
       </div>
     </div>

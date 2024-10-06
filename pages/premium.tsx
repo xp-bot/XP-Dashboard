@@ -157,7 +157,7 @@ const Premium: NextPage<PremiumProps> = () => {
       `premium`,
       undefined,
       undefined,
-      headerGradientTypes.premium
+      headerGradientTypes.premium,
     );
   }, []);
 
@@ -227,10 +227,14 @@ const Premium: NextPage<PremiumProps> = () => {
 };
 
 export async function getStaticProps() {
-  // const blogPosts = await apiRoutes.blog.get.posts();
+  if (process.env.npm_lifecycle_event === "build")
+    return {
+      notFound: true,
+    };
   return {
-    props: {
-      // blogPosts: blogPosts.success ? blogPosts.body : [],
+    redirect: {
+      destination: "/",
+      permanent: true,
     },
   };
 }

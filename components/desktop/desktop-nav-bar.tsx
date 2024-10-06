@@ -49,12 +49,12 @@ const NavigationItems: ITabButton[] = [
     isActive: constant(false),
     link: `https://get.xp-bot.net/`,
   },
-  {
-    text: `Premium`,
-    isActive: (path: string[]) => isEqual(path[0], `premium`),
-    isVisible: (user) => isUndefined(user) || !user?.premium.userPremium,
-    link: `/premium`,
-  },
+  // {
+  //   text: `Premium`,
+  //   isActive: (path: string[]) => isEqual(path[0], `premium`),
+  //   isVisible: (user) => isUndefined(user) || !user?.premium.userPremium,
+  //   link: `/premium`,
+  // },
   {
     text: `Status`,
     isActive: (path: string[]) => isEqual(path[0], `status`),
