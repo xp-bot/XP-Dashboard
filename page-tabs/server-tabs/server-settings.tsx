@@ -1,12 +1,10 @@
 // eslint-disable-next-line import/no-cycle
 import {
-  faBoxesPacking,
   faDownload,
   faInfoCircle,
   faPaintBrush,
   faSave,
   faToggleOff,
-  faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ButtonCluster, { ButtonFeature } from "components/button-cluster";
@@ -24,6 +22,7 @@ import { FinalColor } from "extract-colors/lib/types/Color";
 import { motion } from "framer-motion";
 import {
   clone,
+  constant,
   filter,
   isEmpty,
   isEqual,
@@ -37,6 +36,9 @@ import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DiscordChannelType } from "utils/discord-utils";
 import { getAverageImageColors } from "utils/image-utils";
+
+import { apiRoutes } from "../../apis/api-helper";
+import downloadBlob from "../../utils/download-blob";
 
 interface ServerTabSettingsProps {}
 
@@ -89,7 +91,7 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
         url: data.url,
         blur: data.blur,
         enabled: true,
-      }
+      },
     );
     setEditBG(false);
   };
@@ -109,7 +111,7 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
           url: guild.currentBackground?.url,
           blur: guild.currentBackground?.blur,
           enabled: false,
-        }
+        },
       );
     setEditBG(false);
   };
@@ -124,7 +126,7 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
           oldValue: `Enabled`,
           newValue: `Disabled`,
         },
-        g
+        g,
       );
     }
   };
@@ -144,7 +146,7 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
           : `Disabled`,
         newValue: channelID,
       },
-      g
+      g,
     );
   };
 
@@ -155,6 +157,22 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
     /(https?:\/\/.*\.(?:png|jpg|jpeg))$/.test(prePreviewBackground)
       ? prePreviewBackground
       : undefined;
+
+  const [downloadedExport, setDownloadedExport] = useState(false);
+
+  const downloadExport = async () => {
+    if (downloadedExport) return;
+    setDownloadedExport(true);
+    const data = await apiRoutes.xp.guild
+      .getExport(guild.guildID)
+      .then((res) => {
+        return res.success ? res.body : {};
+      })
+      .catch(constant({}));
+
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    downloadBlob(blob, "community_export.json");
+  };
 
   return (
     <>
@@ -213,7 +231,7 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
                     guild.currentDiscordChannels,
                     (channel) =>
                       isEqual(channel.type, DiscordChannelType.news) ||
-                      isEqual(channel.type, DiscordChannelType.text)
+                      isEqual(channel.type, DiscordChannelType.text),
                   ) || [],
                   (channel) => ({
                     id: channel.id,
@@ -222,12 +240,31 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
                       guild.currentXPGuild?.leaderboard_message.enabled &&
                       isEqual(
                         guild.currentXPGuild?.leaderboard_message.channelID,
-                        channel.id
+                        channel.id,
                       ),
-                  })
+                  }),
                 ),
               ]}
             />
+          </div>
+          <div>
+            <PageTitle title="Community Export" />
+            <div
+              className={
+                !downloadedExport ? `` : `pointer-events-none opacity-75`
+              }
+            >
+              <ButtonCluster
+                buttons={[
+                  {
+                    text: "Export Community",
+                    icon: faDownload,
+                    disabled: downloadedExport,
+                    onClick: downloadExport,
+                  },
+                ]}
+              />
+            </div>
           </div>
           {/* <div>
             <PageTitle
@@ -357,8 +394,8 @@ const ServerTabSettings: FC<ServerTabSettingsProps> = () => {
                 !startsWith(value, `https://`)
                   ? `The URL needs to start with "https://"!`
                   : !/(https?:\/\/.*\.(?:png|jpg|jpeg))$/.test(value)
-                  ? `The Image must directly lead to an exposed image. (.png / .jpg / .jpeg)`
-                  : true,
+                    ? `The Image must directly lead to an exposed image. (.png / .jpg / .jpeg)`
+                    : true,
             })}
             formError={errors.url}
             label="Server Background URL"
