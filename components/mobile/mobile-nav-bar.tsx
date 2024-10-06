@@ -1,6 +1,5 @@
 import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
 import {
-  faCrown,
   faHome,
   faServer,
   faSignIn,
@@ -99,7 +98,7 @@ const MobileNavBar: FC<MobileNavBarProps> = () => {
           filter(NavigationItems, (item) =>
             item.isVisible
               ? item.isVisible(user.currentUser, currentPath)
-              : true
+              : true,
           ),
           ({ text, link, isActive, icon }, idx) => (
             <Link key={idx} href={link}>
@@ -116,7 +115,7 @@ const MobileNavBar: FC<MobileNavBarProps> = () => {
                 <p className="text-xs">{text}</p>
               </div>
             </Link>
-          )
+          ),
         )}
       </div>
     </div>
